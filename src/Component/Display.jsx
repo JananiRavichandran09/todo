@@ -16,7 +16,7 @@ const Display = ({ item, index, deleteButton, statusUpdate, handleEdit }) => {
               className="card-body"
               style={{ backgroundColor: "rgb(221, 255, 170)" }}
             >
-              <p className="card-title">Name : {item.title}</p>
+              <p className="card-title">Title: {item.title}</p>
               <p className="card-text">Description : {item.description}</p>
               <p className="card-text">Priority : {item.priority}</p>
               <p className="card-text">Due Date : {item.dueDate}</p>
