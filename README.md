@@ -1,6 +1,6 @@
 # React ToDo list
 
- + In my `ToDo` list adding the **Title** and **Description**.
+ + In my `ToDo` list adding the **Title**, **Description**, **DueDate**, and **Priority**.
  + Filtering the Task whether `pending state` or `completed`.
  + Next, we can **Edit** the task.
  + We can `Delete` the list if it is not needed.
