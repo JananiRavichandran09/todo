@@ -11,7 +11,6 @@
  + **useEffect** Enables side effects in `functional components` (e.g., data fetching, subscriptions).
 
 
-
  ## Programming Languages Used
 
 <div align="left" display="inline">
