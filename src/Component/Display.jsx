@@ -65,7 +65,7 @@ const Display = ({ item, index, deleteButton, statusUpdate, handleEdit }) => {
           <div className="card bg-success bg-opacity-50 ">
             <div className="card-body">
               <div>
-                <label>Name :</label>
+                <label>Title :</label>
                 <input
                   type="text"
                   placeholder={item.title}
