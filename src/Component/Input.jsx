@@ -71,7 +71,7 @@ const Input = ({ todoValue, setTodoValue, addTodo }) => {
           }}
           class="col-lg-4 col-sm-12 p-2 m-1 border-success border-3"
           type="date"
-          placeholder="Due Date"
+          placeholder="dd-mm-yyyy"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
           required
