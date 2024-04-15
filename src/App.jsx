@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Input from "./Component/Input";
-import Display from "./Component/Display";
+import '../src/App.css'
 import DropMenu from "./Component/DropMenu";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const App = () => {
   const [todoValue, setTodoValue] = useState([]);
   const [filteredTodo, setFilteredTodo] = useState(todoValue);
   const [filterStatus, setFilteredStatus] = useState("all");
 
-  const addTodo = (title, description, priority, dueDate) => {
+  const addTodo = (title, description, priority, dueDate, image) => {
     let newData = {
       id: todoValue.length,
       title: title,
       description: description,
       priority: priority,
       dueDate: dueDate,
+      image:image,
       completed: false,
     };
     setTodoValue([...todoValue, newData]);
@@ -58,34 +60,69 @@ const App = () => {
     }
   }, [filterStatus, todoValue]);
 
-  const handleEdit = (
-    id,
-    newTitle,
-    newDescription,
-    newPriority,
-    newDueDate
-  ) => {
-    setTodoValue(
-      todoValue.map((item, index) => {
-        return {
-          ...item,
-          title: item.id === id ? newTitle : item.title,
-          description: item.id === id ? newDescription : item.description,
-          priority: item.id === id ? newPriority : item.priority,
-          dueDate: item.id === id ? newDueDate : item.dueDate,
-        };
-      })
-    );
-  };
+ const handleEdit = (
+   id,
+   newTitle,
+   newDescription,
+   newPriority,
+   newDueDate,
+   newImage // Add newImage parameter
+ ) => {
+   setTodoValue(
+     todoValue.map((item, index) => {
+       return {
+         ...item,
+         title: item.id === id ? newTitle : item.title,
+         description: item.id === id ? newDescription : item.description,
+         priority: item.id === id ? newPriority : item.priority,
+         dueDate: item.id === id ? newDueDate : item.dueDate,
+         image: item.id === id ? newImage : item.image, // Update image if ID matches
+       };
+     })
+   );
+ };
+
   return (
     <div>
-      <Input
-        todoValue={todoValue}
-        setTodoValue={setTodoValue}
-        addTodo={addTodo}
-      />
-      <DropMenu handleFilter={handleFilter} filterStatus={filterStatus} />
-      <div class=" container">
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Input
+                todoValue={todoValue}
+                setTodoValue={setTodoValue}
+                addTodo={addTodo}
+              />
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              <DropMenu
+                handleFilter={handleFilter}
+                filterStatus={filterStatus}
+                filteredTodo={filteredTodo}
+                setFilteredTodo={setFilteredTodo}
+                deleteButton={deleteButton}
+                statusUpdate={statusUpdate}
+                handleEdit={handleEdit}
+              />
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+     
+      
+    </div>
+  );
+};
+
+export default App;
+App.js
+
+
+{/* <div class=" container">
         <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 mt-1 p-3 g-4">
           {filteredTodo.map((item, index) => {
             return (
@@ -99,9 +136,4 @@ const App = () => {
             );
           })}
         </div>
-      </div>
-    </div>
-  );
-};
-
-export default App;
+      </div> */}

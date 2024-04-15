@@ -6,6 +6,7 @@ const Display = ({ item, index, deleteButton, statusUpdate, handleEdit }) => {
   const [newDescription, setNewDescription] = useState(item.description);
   const [newPriority, setNewPriority] = useState(item.priority);
   const [newDueDate, setNewDueDate] = useState(item.dueDate);
+  const [newImage, setNewImage] = useState(item.image); // Initialize newImage with item.image
 
   return (
     <>
@@ -20,6 +21,17 @@ const Display = ({ item, index, deleteButton, statusUpdate, handleEdit }) => {
               <p className="card-text">Description : {item.description}</p>
               <p className="card-text">Priority : {item.priority}</p>
               <p className="card-text">Due Date : {item.dueDate}</p>
+              <div className="image-container">
+                {item.image && (
+                  <div style={{ width: "100px", height: "100px" }}>
+                    <img
+                      src={URL.createObjectURL(item.image)}
+                      alt="Attachment"
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </div>
+                )}
+              </div>
               <p className="card-text">
                 Status :
                 <select
@@ -86,27 +98,52 @@ const Display = ({ item, index, deleteButton, statusUpdate, handleEdit }) => {
               <br />
               <div>
                 <label> Priority :</label>
-                <input
-                  type="number"
-                  placeholder={item.priority}
+                <select
                   value={newPriority}
                   onChange={(e) => setNewPriority(e.target.value)}
+                >
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+              </div>
+              <br />
+              <div>
+                <label>Due Date :</label>
+                <input
+                  type="date"
+                  placeholder={item.dueDate}
+                  value={newDueDate}
+                  onChange={(e) => setNewDueDate(e.target.value)}
                 />
               </div>
               <br />
-              Due Date :
-              <input
-                type="date"
-                placeholder={item.dueDate}
-                value={newDueDate}
-                onChange={(e) => setNewDueDate(e.target.value)}
-              />
+              <div>
+                <label>Image :</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setNewImage(e.target.files[0])}
+                />
+              </div>
+              <br />
+              <div className="image-container">
+                {newImage && (
+                  <div style={{ width: "100px", height: "100px" }}>
+                    <img
+                      src={URL.createObjectURL(newImage)}
+                      alt="Attachment"
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </div>
+                )}
+              </div>
               <br />
               <div>
                 <h5 className="card-text">
                   Status :
-                    <select
-                      style={{color:"white"}}
+                  <select
+                    style={{ color: "white" }}
                     className={
                       item.completed
                         ? "bg-success m-2 p-0"
@@ -116,11 +153,10 @@ const Display = ({ item, index, deleteButton, statusUpdate, handleEdit }) => {
                     id="task-completion"
                     value={item.completed}
                     onChange={(e) => {
-                      statusUpdate(e.target.value, item.id)
-                      
+                      statusUpdate(e.target.value, item.id);
                     }}
                   >
-                    <option value={true} >Completed</option>
+                    <option value={true}>Completed</option>
                     <option value={false}>Pending</option>
                   </select>
                 </h5>
@@ -134,7 +170,8 @@ const Display = ({ item, index, deleteButton, statusUpdate, handleEdit }) => {
                       newTitle,
                       newDescription,
                       newPriority,
-                      newDueDate
+                      newDueDate,
+                      newImage
                     );
                     setEdit(!edit);
                   }}

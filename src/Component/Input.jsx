@@ -1,17 +1,36 @@
-import React, { useState } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
-const Input = ({ todoValue, setTodoValue, addTodo }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState("");
-  const [dueDate, setDueDate] = useState("");
-  const addButtonCall = () => {
-    addTodo(title, description, priority, dueDate);
-    setTitle("");
-    setDescription("");
-    setPriority("");
-    setDueDate("");
+const Input = ({ addTodo }) => {
+  const initialValues = {
+    title: "",
+    description: "",
+    priority: "",
+    dueDate: "",
+    image: "", 
   };
+
+  const validationSchema = Yup.object().shape({
+    title: Yup.string().required("Title is required"),
+    description: Yup.string().required("Description is required"),
+    priority: Yup.string().required("Priority is required"),
+    dueDate: Yup.string().required("Due date is required"),
+    image: Yup.mixed(), 
+  });
+
+  const onSubmit = (values, { resetForm }) => {
+    addTodo(
+      values.title,
+      values.description,
+      values.priority,
+      values.dueDate,
+      values.image
+    );
+    resetForm();
+  };
+
   return (
     <div className="container">
       <h1
@@ -20,83 +39,96 @@ const Input = ({ todoValue, setTodoValue, addTodo }) => {
       >
         My Todo
       </h1>
-      <div className="container">
-        <div
-          className="row  justify-content-around text"
-          style={{ marginTop: "100px", textAlign: "center" }}
-        >
-          <input
-            style={{
-              padding: "10px",
-              marginRight: "100px",
-              borderRadius: "10px",
-            }}
-            class="col-lg-4 col-sm-12 p-2 m-1 border-success border-3"
-            type="text"
-            placeholder="Todo Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-          <input
-            style={{
-              padding: "10px",
-              marginRight: "100px",
-              borderRadius: "10px",
-            }}
-            class="col-lg-4 col-sm-12 p-2 m-1 border-success border-3"
-            type="text"
-            placeholder="Todo Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-          <input
-            style={{
-              padding: "10px",
-              marginRight: "100px",
-              borderRadius: "10px",
-            }}
-            class="col-lg-4 col-sm-12 p-2 m-1 border-success border-3"
-            type="number"
-            placeholder="Priority"
-            value={priority}
-            onChange={(e) => setPriority(e.target.value)}
-            required
-          />
-          <input
-            style={{
-              padding: "10px",
-              marginRight: "100px",
-              borderRadius: "10px",
-            }}
-            class="col-lg-4 col-sm-12 p-2 m-1 border-success border-3"
-            type="date"
-            placeholder="dd-mm-yyyy"
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
-            required
-          />
-          <div>
-            <button
-              style={{
-                padding: "10px",
-                marginRight: "100px",
-                borderRadius: "15px",
-                backgroundColor: "#198754",
-                border: "none",
-                borderRadius: "10px",
-                color: "white",
-              }}
-              class="col-lg-1 col-sm-3 col-3 p-2 m-1 btn btn-success border-success border-3"
-              onClick={() => {
-                addButtonCall(title, description, priority, dueDate);
-              }}
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+      >
+        {({ isSubmitting, setFieldValue }) => (
+          <Form>
+            <div
+              className="row justify-content-around text"
+              style={{ marginTop: "100px" }}
             >
-              Add Todo
-            </button>
-          </div>
-        </div>
+              <div className="col-lg-3 col-md-6 mb-3">
+                <Field
+                  type="text"
+                  name="title"
+                  placeholder="Todo Title"
+                  className="form-control"
+                />
+                <ErrorMessage
+                  name="title"
+                  component="div"
+                  className="error-message"
+                />
+              </div>
+              <div className="col-lg-3 col-md-6 mb-3">
+                <Field
+                  type="text"
+                  name="description"
+                  placeholder="Todo Description"
+                  className="form-control"
+                />
+                <ErrorMessage
+                  name="description"
+                  component="div"
+                  className="error-message"
+                />
+              </div>
+              <div className="col-lg-3 col-md-6 mb-3">
+                <Field as="select" name="priority" className="form-control">
+                  <option value="">Select Priority</option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </Field>
+                <ErrorMessage
+                  name="priority"
+                  component="div"
+                  className="error-message"
+                />
+              </div>
+              <div className="col-lg-3 col-md-6 mb-3">
+                <Field
+                  type="date"
+                  name="dueDate"
+                  placeholder="Due Date"
+                  className="form-control"
+                />
+                <ErrorMessage
+                  name="dueDate"
+                  component="div"
+                  className="error-message"
+                />
+              </div>
+              <div className="col-lg-3 col-md-6 mb-3">
+                <input
+                  type="file"
+                  name="image"
+                  onChange={(event) => {
+                    setFieldValue("image", event.currentTarget.files[0]);
+                  }}
+                />
+                
+              </div>
+            </div>
+            <div className="text-center">
+              <button
+                type="submit"
+                className="btn btn-success"
+                disabled={isSubmitting}
+              >
+                Add Todo
+              </button>
+            </div>
+          </Form>
+        )}
+      </Formik>
+      <div className="text-center m-5 p-5">
+        <Link to="/home" className="btn btn-outline-primary ml-2">
+          View Me
+        </Link>
       </div>
     </div>
   );
