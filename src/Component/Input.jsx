@@ -125,7 +125,7 @@ const Input = ({ addTodo }) => {
           </Form>
         )}
       </Formik>
-      <div className="text-center m-5 p-5">
+      <div className="text-center m-5 p-5" style={{marginBottom:"20px"}}>
         <Link to="/home" className="btn btn-outline-primary ml-2">
           View Me
         </Link>
